@@ -226,8 +226,12 @@ void WinUpdate(WINDOW *window, struct dwTransferData *dp)
 				wprintw(window, "%s", "57600 baud");
 				break;
 
+		case B38400:
+				wprintw(window, "%s", "38400 baud");
+				break;
+
 		default:
-				wprintw(window, "%s", "Undefined");
+				wprintw(window, "%s: %d", "Undefined", dp->baudRate);
 				break;
 	}
 	wmove(window, y++, x); wclrtoeol(window);

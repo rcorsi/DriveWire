@@ -216,7 +216,7 @@ int main(int argc, char **argv)
         strcpy(dskfile[1], "disk1");
         strcpy(dskfile[2], "disk2");
         strcpy(dskfile[3], "disk3");
-        setBaud(&datapack, 3); // assume CoCo 3
+        setBaud(&datapack, B115200); // assume CoCo 3
         // change EOLs and send to printer
         strcpy(datapack.prtcmd, "| tr \"\\r\" \"\\n\" | lpr");
         // change EOLs and move to file
@@ -274,7 +274,7 @@ int main(int argc, char **argv)
 
     if (comOpen(&datapack, device) < 0)
     {
-        fprintf(stderr, "Couldn't open %s (error %d)\n", device, errno);
+        fprintf(stderr, "Couldn't open /dev/%s (error %d)\n", device, errno);
         
         exit(0);
     }
@@ -341,14 +341,14 @@ int main(int argc, char **argv)
                 break;
 
             case 'b':
+                if (datapack.baudRate == B230400)
+                {
+                    setBaud(&datapack, B38400);
+                }
+                else
                 if (datapack.baudRate == B115200)
                 {
                     setBaud(&datapack, B230400);
-                }
-                else
-                if (datapack.baudRate == B230400)
-                {
-                    setBaud(&datapack, B57600);
                 }
                 else
                 if (datapack.baudRate == B57600)
@@ -356,8 +356,9 @@ int main(int argc, char **argv)
                     setBaud(&datapack, B115200);
                 }
                 else
+                if (datapack.baudRate == B38400)
                 {
-                    setBaud(&datapack, 230400);
+                    setBaud(&datapack, B57600);
                 }
                 comRaw(&datapack);
                 WinUpdate(window0, &datapack);
